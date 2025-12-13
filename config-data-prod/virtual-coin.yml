@@ -10,7 +10,7 @@ spring:
       server:
         git:
           default-label: master
-          uri: https://github.com/banking-nttdata-bootcamp/virtual-coin
+          uri: https://github.com/bank-nttdata/virtual-coin
   application:
     name: virtual-coin
 

@@ -10,7 +10,7 @@ spring:
       server:
         git:
           default-label: master
-          uri: https://github.com/banking-nttdata-bootcamp/deposit
+          uri: https://github.com/bank-nttdata/deposit
   application:
     name: deposit
 

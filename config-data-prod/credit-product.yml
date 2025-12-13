@@ -10,7 +10,7 @@ spring:
       server:
         git:
           default-label: master
-          uri: https://github.com/banking-nttdata-bootcamp/credit-product
+          uri: https://github.com/bank-nttdata/credit-product
   application:
     name: credit-product
 
