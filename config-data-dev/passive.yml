@@ -1,0 +1,70 @@
+server:
+  port: ${PORT:${SERVER_PORT:0}}
+
+spring:
+  data:
+    mongodb:
+      uri: mongodb+srv://jlodarsantamaria_db_user:nT0dlTcHLqCVvV6p@clusterodar.topeczm.mongodb.net/passive?appName=clusterodar
+
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      group-id: passive-group
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring.json.trusted.packages: "*"
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+
+  cloud:
+    config:
+      server:
+        git:
+          default-label: master
+          uri: https://github.com/bank-nttdata/passive
+  application:
+    name: passive
+
+  management:
+    endpoints:
+      web:
+        exposure:
+          include: "*"   # Expone todos los endpoints
+    endpoint:
+      health:
+        show-details: always
+        show-components: always
+    info:
+      app:
+        name: passive
+        description: Microservicio de cuentas pasivas (NTT Data Bootcamp)
+        version: 1.0.0
+
+
+eureka:
+  client:
+    fetch-registry: true
+    register-with-eureka: true
+  instance:
+    instance-id: ${spring.application.name}:${localhost:${random.value}}
+    service-url:
+      default-zone: http://localhost:8761/eureka
+    prefer-ip-address: true
+
+springdoc:
+  packagesToScan: com.nttdata.bootcamp
+
+resilience4j.circuitbreaker:
+  instances:
+    passive:
+      registerHealthIndicator: true
+      slidingWindowSize: 10
+      permittedNumberOfCallsInHalfOpenState: 3
+      slidingWindowType: TIME_BASED
+      minimumNumberOfCalls: 4
+      waitDurationInOpenState: 2s
+      failureRateThreshold: 50
+      eventConsumerBufferSize: 10
